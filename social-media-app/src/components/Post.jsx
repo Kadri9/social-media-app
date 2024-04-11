@@ -51,7 +51,6 @@ function Post(props){
     let handleLike = (event) => {
         console.log(likes)
         setLikes(likes + 1)
-        console.log(likes, "after")
     }
 
     let handleReply = (reply) => {
@@ -62,10 +61,8 @@ function Post(props){
     return(
         <div className="message-container">
           <h1>{props.author}</h1>
-          <h3>{props.content}</h3>
-          <h4>{props.date}</h4>
+          <h2>{props.content}</h2>
           <h5>Likes: {likes} </h5>
-
           <div>
               <button onClick={handleLike}>Like!</button>
           </div>
@@ -75,8 +72,6 @@ function Post(props){
               <ReplyForm onNewReply={handleReply}/>
 
               <ReplyList data={replies}/>
-              
-
           </div>
 
         </div>

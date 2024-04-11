@@ -1,26 +1,87 @@
-import React, { useState } from 'react';
+import {useState} from 'react'
 
-import Comment from './Comment';
+
+function ReplyForm(props){
+    
+    const [reply, setReply] = useState("")
+
+    return(
+        <form onSubmit={(event)=>{
+            event.preventDefault()
+
+            props.onNewReply(reply)
+
+            setReply('')
+        }}>
+
+            <textarea placeholder='Add your comment!' onChange={(event)=>{
+                setReply(event.target.value)
+            }}  value={reply}/>
+
+            <input type="submit"/>
+
+        </form>
+    )
+}
+
+function ReplyList(props){
+
+    let renderList = () => {
+        console.log(props.data)
+        return props.data.map((data)=>{
+            return <p>{data}</p>
+          }) 
+    }
+
+    return (
+        <div>
+            {renderList()}
+        </div>
+    )
+
+}
+
 
 function Post(props){
 
-  const [likes, setLikes] = useState(0);
+    let [likes, setLikes] = useState(0)
 
-  function handleLike(){
-    setLikes(likes + 1);
-  }
+    let [replies, setReplies] = useState([])
 
-  return(
-    <div>
-      <h3>{props.content}</h3>
-      <p>Likes: {likes}</p>
-      <button onClick={handleLike}>Like</button>
-      <p>Comments:</p>
-      <Comment content="This is a test comment!" />
-      <Comment content="This is another test comment!" />
-      <Comment content="This is yet another test comment!" />
-    </div>
-  )
+    let handleLike = (event) => {
+        console.log(likes)
+        setLikes(likes + 1)
+        console.log(likes, "after")
+    }
+
+    let handleReply = (reply) => {
+      console.log(reply)
+      setReplies([...replies, reply])
+    }
+
+    return(
+        <div className="message-container">
+          <h1>{props.author}</h1>
+          <h3>{props.content}</h3>
+          <h4>{props.date}</h4>
+          <h5>Likes: {likes} </h5>
+
+          <div>
+              <button onClick={handleLike}>Like!</button>
+          </div>
+
+          <div>
+              <h4>Comments</h4>
+              <ReplyForm onNewReply={handleReply}/>
+
+              <ReplyList data={replies}/>
+              
+
+          </div>
+
+        </div>
+
+    )
 }
 
 export default Post
